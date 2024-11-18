@@ -7,8 +7,8 @@ import (
 )
 
 type User struct {
-	Username string
-	Password string
+	Username       string
+	HashedPassword string
 }
 
 func AddUser(username string, hashedPassword string) error {
@@ -31,7 +31,7 @@ func GetUserByUsername(username string) (User, error) {
 		WHERE username = ?
 	`
 	row := db.MySql.QueryRow(query, username)
-	if err := row.Scan(&u.Username, &u.Password); err != nil {
+	if err := row.Scan(&u.Username, &u.HashedPassword); err != nil {
 		if err == sql.ErrNoRows {
 			return u, fmt.Errorf("user does not exist")
 		}
@@ -53,7 +53,7 @@ func GetAllUsers() ([]User, error) {
 	defer rows.Close()
 	for rows.Next() {
 		var cUser User
-		if err := rows.Scan(&cUser.Username, &cUser.Password); err != nil {
+		if err := rows.Scan(&cUser.Username, &cUser.HashedPassword); err != nil {
 			return nil, fmt.Errorf("getAll: %v", err)
 		}
 		users = append(users, cUser)

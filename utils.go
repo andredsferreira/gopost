@@ -18,10 +18,15 @@ func hashPassword(p string) (string, error) {
 	return string(b), nil
 }
 
+func checkPasswordHash(p, h string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(h), []byte(p))
+	return err == nil
+}
+
 func generateJWT(username string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		jwt.MapClaims{
-			"exp":      time.Now().Add(1 * time.Hour).Unix(),
+			"expire":      time.Now().Add(1 * time.Hour).Unix(),
 			"username": username,
 		})
 	tokenString, err := token.SignedString(HMACSecretKey)

@@ -31,22 +31,22 @@ func handleIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleRegister(w http.ResponseWriter, r *http.Request) {
-	u := r.FormValue("username")
-	p := r.FormValue("password")
-	if len(u) < 3 || len(p) < 3 {
+	user := r.FormValue("username")
+	password := r.FormValue("password")
+	if len(user) < 3 || len(password) < 3 {
 		http.Error(w, "invalid username/password", http.StatusNotAcceptable)
 		return
 	}
-	if eu, _ := data.GetUserByUsername(u); eu.Username == u {
+	if eu, _ := data.GetUserByUsername(user); eu.Username == user {
 		http.Error(w, "user already registered", http.StatusNotAcceptable)
 		return
 	}
-	hp, err := hashPassword(p)
+	hp, err := hashPassword(password)
 	if err != nil {
 		http.Error(w, "error hashing password", http.StatusInternalServerError)
 		return
 	}
-	err = data.AddUser(u, hp)
+	err = data.AddUser(user, hp)
 	if err != nil {
 		http.Error(w, "could not register user", http.StatusInternalServerError)
 		return
@@ -55,7 +55,27 @@ func handleRegister(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleLogin(w http.ResponseWriter, r *http.Request) {
-
+	if r.Method != http.MethodPost {
+		http.Error(w, "invalid request method", http.StatusMethodNotAllowed)
+	}
+	user := r.FormValue("username")
+	password := r.FormValue("password")
+	eu, err := data.GetUserByUsername(user)
+	if err != nil {
+		http.Error(w, "invalid username", http.StatusUnauthorized)
+	}
+	if !checkPasswordHash(password, eu.HashedPassword) {
+		http.Error(w, "invalid password", http.StatusUnauthorized)
+	}
+	token, err := generateJWT(user)
+	if err != nil {
+		http.Error(w, "error generating JWT token", http.StatusInternalServerError)
+	}
+	http.SetCookie(w, &http.Cookie{
+		Name: "jwt_token",
+		Value: token,
+		HttpOnly: true,
+	})
 }
 
 func handleLogout(w http.ResponseWriter, r *http.Request) {
@@ -63,5 +83,5 @@ func handleLogout(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleUsers(w http.ResponseWriter, r *http.Request) {
-	
+
 }
