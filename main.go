@@ -6,9 +6,7 @@ import (
 	"goweb01/db"
 	"html/template"
 	"log"
-	"math/rand"
 	"net/http"
-	"time"
 )
 
 func main() {
@@ -19,14 +17,17 @@ func main() {
 
 	http.HandleFunc("/", handleIndex)
 	http.HandleFunc("POST /register", handleRegister)
-	http.HandleFunc("/login", handleLogin)
-	http.HandleFunc("/logout", handleLogout)
-	http.HandleFunc("GET /requestinfo", handleRequestInfo)
-	http.HandleFunc("GET /randomnumbers", handleRandomNumbers)
-	http.HandleFunc("GET /date", handleDate)
+	http.HandleFunc("POST /login", handleLogin)
+	http.HandleFunc("POST /logout", handleLogout)
+	http.HandleFunc("GET /users", handleUsers)
 
 	fmt.Println("server on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+func handleIndex(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("templates/index.html"))
+	tmpl.ExecuteTemplate(w, "index.html", nil)
 }
 
 func handleRegister(w http.ResponseWriter, r *http.Request) {
@@ -61,44 +62,6 @@ func handleLogout(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func handleIndex(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("templates/index.html"))
-	tmpl.ExecuteTemplate(w, "index.html", nil)
-}
-
-func handleRequestInfo(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("templates/request-info.html"))
-	data := struct {
-		URL           string
-		Host          string
-		Protocol      string
-		Method        string
-		ContentLength int64
-	}{
-		URL:           r.URL.String(),
-		Host:          r.Host,
-		Protocol:      r.Proto,
-		Method:        r.Method,
-		ContentLength: r.ContentLength,
-	}
-	tmpl.Execute(w, data)
-}
-
-func handleRandomNumbers(w http.ResponseWriter, r *http.Request) {
-	nums := make([]int, 10)
-	src := rand.NewSource(time.Now().UnixNano())
-	rng := rand.New(src)
-	for i := 0; i < 10; i++ {
-		nums[i] = rng.Intn(50) + 1
-	}
-	tmpl := template.Must(template.ParseFiles("templates/random-numbers.html"))
-	tmpl.Execute(w, nums)
-}
-
-func handleDate(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.New("date.html").Funcs(template.FuncMap{
-		"fdate": formatDate,
-	}).ParseFiles("templates/date.html"))
-	tmpl.Execute(w, time.Now())
-
+func handleUsers(w http.ResponseWriter, r *http.Request) {
+	
 }
