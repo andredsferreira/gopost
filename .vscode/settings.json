@@ -1,0 +1,18 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "vsgate-s1.dei.isep.ipp.pt",
+            "port": 10694,
+            "driver": "MySQL",
+            "name": "Mysql",
+            "database": "go_web_01",
+            "username": "root",
+            "password": "42DctTV7IC0F"
+        }
+    ]
+}

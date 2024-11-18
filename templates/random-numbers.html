@@ -1,0 +1,21 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random numbers</title>
+  <link rel="stylesheet" href="../static/global.css">
+</head>
+
+<body>
+  <main>
+    <h2>Random numbers</h2>
+    <ul>
+      {{ range . }}
+      <li>{{ . }}</li>
+      {{end}}
+    </ul>
+  </main>
+</body>
+
+</html>

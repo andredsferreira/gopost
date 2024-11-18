@@ -1,0 +1,9 @@
+p {
+    display: inline-block;
+    text-align: justify;
+    padding: 6px;
+    margin: 10px;
+    margin-left: 0px;
+    border: 1px solid white;
+    border-radius: 6px;
+}
