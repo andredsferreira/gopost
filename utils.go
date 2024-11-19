@@ -1,7 +1,10 @@
 package main
 
 import (
+	"errors"
+	"goweb01/data"
 	"log"
+	"net/http"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -26,7 +29,7 @@ func checkPasswordHash(p, h string) bool {
 func generateJWT(username string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		jwt.MapClaims{
-			"expire":      time.Now().Add(1 * time.Hour).Unix(),
+			"expire":   time.Now().Add(1 * time.Hour).Unix(),
 			"username": username,
 		})
 	tokenString, err := token.SignedString(HMACSecretKey)
@@ -34,4 +37,21 @@ func generateJWT(username string) (string, error) {
 		log.Fatal(err)
 	}
 	return tokenString, nil
+}
+
+func Authorize(r *http.Request) error {
+	username := r.FormValue("username")
+	user, err := data.GetUserByUsername(username)
+	if err != nil {
+		return err
+	}
+	st, err := r.Cookie("session_token")
+	if err != nil || st.Value != user.SessionToken || st.Value == "" {
+		return errors.New("session token error")
+	}
+	csrf := r.Header.Get("X-CSRF-Token")
+	if csrf != user.CSRFToken || csrf == "" {
+		return errors.New("csrf token error")
+	}
+	return nil
 }
