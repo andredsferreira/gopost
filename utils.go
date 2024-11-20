@@ -2,8 +2,8 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"goweb01/data"
-	"log"
 	"net/http"
 	"time"
 
@@ -16,7 +16,7 @@ var HMACSecretKey []byte = []byte("f20jh6nbp3Vr0n2c02c0n1894j2vnrv0un2m40395jbv4
 func hashPassword(p string) (string, error) {
 	b, err := bcrypt.GenerateFromPassword([]byte(p), 12)
 	if err != nil {
-		log.Fatal(err)
+		return "", fmt.Errorf("error hashing password: %v", err)
 	}
 	return string(b), nil
 }
@@ -34,9 +34,26 @@ func generateJWT(username string) (string, error) {
 		})
 	tokenString, err := token.SignedString(HMACSecretKey)
 	if err != nil {
-		log.Fatal(err)
+		return "", fmt.Errorf("error signing token string: %v", err)
 	}
 	return tokenString, nil
+}
+
+func getClaimsFromJWT(jwts string) (jwt.MapClaims, error) {
+	token, err := jwt.Parse(jwts, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v",
+				token.Header["alg"])
+		}
+		return HMACSecretKey, nil
+	})
+	if err != nil {
+		return nil, fmt.Errorf("error parsing jwt: %v", err)
+	}
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		return claims, nil
+	}
+	return nil, fmt.Errorf("invalid jwt")
 }
 
 func Authorize(r *http.Request) error {
@@ -47,11 +64,11 @@ func Authorize(r *http.Request) error {
 	}
 	st, err := r.Cookie("session_token")
 	if err != nil || st.Value != user.SessionToken || st.Value == "" {
-		return errors.New("session token error")
+		return fmt.Errorf("no session token provided: %v", err)
 	}
 	csrf := r.Header.Get("X-CSRF-Token")
 	if csrf != user.CSRFToken || csrf == "" {
-		return errors.New("csrf token error")
+		return errors.New("csrf token header invalid")
 	}
 	return nil
 }
