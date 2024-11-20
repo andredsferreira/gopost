@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"goweb01/data"
 	"goweb01/db"
+	"goweb01/middleware"
 	"html/template"
 	"log"
 	"net/http"
@@ -21,8 +22,11 @@ func main() {
 	http.HandleFunc("POST /logout", handleLogout)
 	http.HandleFunc("GET /home", handleHome)
 	http.HandleFunc("GET /users", handleUsers)
+
+	mux := middleware.NewLogger(http.DefaultServeMux)
+	
 	fmt.Println("server on http://localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":8080", mux))
 }
 
 func handleLanding(w http.ResponseWriter, r *http.Request) {
