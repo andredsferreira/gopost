@@ -15,18 +15,19 @@ func main() {
 	files := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", files))
 
-	http.HandleFunc("/", handleIndex)
+	http.HandleFunc("/", handleLanding)
 	http.HandleFunc("POST /register", handleRegister)
 	http.HandleFunc("POST /login", handleLogin)
 	http.HandleFunc("POST /logout", handleLogout)
+	http.HandleFunc("GET /home", handleHome)
 	http.HandleFunc("GET /users", handleUsers)
 	fmt.Println("server on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
-func handleIndex(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("templates/index.html"))
-	tmpl.ExecuteTemplate(w, "index.html", nil)
+func handleLanding(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("templates/landing.html"))
+	tmpl.ExecuteTemplate(w, "landing.html", nil)
 }
 
 func handleRegister(w http.ResponseWriter, r *http.Request) {
@@ -92,7 +93,8 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-	fmt.Fprintln(w, "successful login")
+	w.Header().Set("HX-Redirect", "/home")
+	log.Println("successful login")
 }
 
 func handleLogout(w http.ResponseWriter, r *http.Request) {
@@ -116,6 +118,11 @@ func handleLogout(w http.ResponseWriter, r *http.Request) {
 	}
 	user.ClearUserSession()
 	fmt.Fprintln(w, "successful logout")
+}
+
+func handleHome(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("templates/home.html"))
+	tmpl.ExecuteTemplate(w, "home.html", nil)
 }
 
 func handleUsers(w http.ResponseWriter, r *http.Request) {

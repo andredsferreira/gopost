@@ -1,0 +1,32 @@
+body {
+    text-align: center;
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    display: inline-block;
+    padding: 20px;
+    margin-bottom: 300px;
+    border: 1px solid white;
+    border-radius: 4px;
+}
+
+.login-container input {
+    margin: 16px;
+    height: 35px;
+}
+
+.login-container input:focus {
+    outline: none;
+}
+
+.login-container button {
+    margin: 16px;
+    height: 35px;
+    min-width: 100px;
+}
+
