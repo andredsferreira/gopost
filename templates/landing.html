@@ -24,6 +24,11 @@
         <div>
           <button type="submit">Login</button>
         </div>
+        {{if .ErrorMessage}}
+        <div class="error-message">
+          {{.ErrorMessage}}
+        </div>
+        {{end}}
       </form>
     </div>
   </main>

@@ -89,6 +89,10 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 		Value:    csrfToken,
 		HttpOnly: false,
 	})
+	http.SetCookie(w, &http.Cookie{
+		Name:  "username",
+		Value: r.FormValue("username"),
+	})
 	err = user.UpdateUserSession(token, csrfToken)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -122,7 +126,11 @@ func handleLogout(w http.ResponseWriter, r *http.Request) {
 
 func handleHome(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("templates/home.html"))
-	tmpl.ExecuteTemplate(w, "home.html", nil)
+	username, _ := r.Cookie("username")
+	data := map[string]interface{}{
+		"username": username.Value,
+	}
+	tmpl.ExecuteTemplate(w, "home.html", data)
 }
 
 func handleUsers(w http.ResponseWriter, r *http.Request) {
