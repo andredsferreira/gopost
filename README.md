@@ -20,23 +20,23 @@ It allows the call of endpoints for registering, login, logout, and listing of u
 
 ## Packages
 
->### auth
->Contains the code that handles authentication logic such as generating JWT, or signing them.
+### auth
+Contains the code that handles authentication logic such as generating JWT, or signing them.
 
->### data
->Contains struct types and methods for that communicate with the database for persistence.
+### data
+Contains struct types and methods for that communicate with the database for persistence.
 
->### db
->Contains database infrastructure logic.
+### db
+Contains database infrastructure logic.
 
->### middleware
->Middleware used in the application.
+### middleware
+Middleware used in the application.
 
->### static
->Static directory for css and js.
+### static
+Static directory for css and js.
 
->### templates
->HTML templates/views that are rendered on the server and served to the client.
+### templates
+HTML templates/views that are rendered on the server and served to the client.
 
 ## Authentication in detail
 
