@@ -35,6 +35,45 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "successful login")
 }
 
+func LogoutHandler(w http.ResponseWriter, r *http.Request) {
+	http.SetCookie(w, &http.Cookie{
+		Name:     "jwt",
+		Value:    "",
+		Path:     "/",
+		MaxAge:   -1, 
+		HttpOnly: true,
+		SameSite: http.SameSiteStrictMode,
+	})
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprint(w, "successful logout" )
+}
+
+func RegisterHandler(w http.ResponseWriter, r *http.Request) {
+	username := r.FormValue("username")
+	password := r.FormValue("password")
+	email := r.FormValue("email")
+
+	if !model.ValidateUser(username, password, email) {
+		http.Error(w, "invalid user fields", http.StatusNotAcceptable)
+		return
+	}
+	if user, _ := model.GetUserByUsername(username); user.Username == username || user.Email == email {
+		http.Error(w, "user already registered", http.StatusNotAcceptable)
+		return
+	}
+	hp, err := service.HashPassword(password)
+	if err != nil {
+		http.Error(w, "error hashing password", http.StatusInternalServerError)
+		return
+	}
+	err = model.AddUser(username, hp, email)
+	if err != nil {
+		http.Error(w, "error adding user in database", http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprint(w, "user registered successfully")
+}
 
 func HelloHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "Hello! You are authorized.")

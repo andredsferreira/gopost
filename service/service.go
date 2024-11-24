@@ -64,4 +64,3 @@ func GetClaimsFromJWT(ts string) (jwt.MapClaims, error) {
 	}
 	return nil, fmt.Errorf("invalid jwt")
 }
-

@@ -16,7 +16,9 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("POST /login", handler.LoginHandler)
-	http.Handle("GET /hello", middleware.AuthMiddleware(http.HandlerFunc(handler.HelloHandler)))
+	mux.HandleFunc("POST /logout", handler.LogoutHandler)
+	mux.HandleFunc("POST /register", handler.RegisterHandler)
+	mux.HandleFunc("GET /hello", middleware.AuthMiddleware(handler.HelloHandler))
 
 	s := &http.Server{
 		Addr:    ":8080",
