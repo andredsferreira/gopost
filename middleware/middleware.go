@@ -7,12 +7,26 @@ import (
 	"time"
 )
 
+type customResponseWriter struct {
+	http.ResponseWriter
+	statusCode int
+}
+
+func (cw *customResponseWriter) WriteHeader(statusCode int) {
+	cw.statusCode = statusCode
+	cw.ResponseWriter.WriteHeader(statusCode)
+}
+
 func LoggerMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		cw := &customResponseWriter{
+			ResponseWriter: w,
+			statusCode:     http.StatusOK,
+		}
 		s := time.Now()
-		next.ServeHTTP(w, r)
+		next.ServeHTTP(cw, r)
 		d := time.Since(s).Seconds()
-		log.Printf("HTTP %s %s %fs\n", r.Method, r.URL.String(), d)
+		log.Printf("HTTP %s %s %d %fs\n", r.Method, r.URL.String(), cw.statusCode, d)
 	}
 }
 
