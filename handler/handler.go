@@ -5,8 +5,15 @@ import (
 	"goweb01/model"
 	"goweb01/service"
 	"net/http"
+	"text/template"
 	"time"
 )
+
+var tmpl = template.Must(template.ParseGlob("static/templates/*.html"))
+
+func HomeHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "home.html", nil)
+}
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	u, err := model.GetUserByUsername(r.FormValue("username"))
@@ -40,12 +47,12 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 		Name:     "jwt",
 		Value:    "",
 		Path:     "/",
-		MaxAge:   -1, 
+		MaxAge:   -1,
 		HttpOnly: true,
 		SameSite: http.SameSiteStrictMode,
 	})
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprint(w, "successful logout" )
+	fmt.Fprint(w, "successful logout")
 }
 
 func RegisterHandler(w http.ResponseWriter, r *http.Request) {

@@ -15,20 +15,24 @@ func init() {
 func main() {
 	mux := http.NewServeMux()
 
-	middlewareStack := middleware.CreateStack(
-		middleware.LoggerMiddleware,
-		middleware.LoggerMiddleware,
-	)
+	files := http.FileServer(http.Dir("static"))
+	mux.Handle("/static/", http.StripPrefix("/static/", files))
 
-	mux.HandleFunc("POST /login", handler.LoginHandler)
-	mux.HandleFunc("POST /logout", handler.LogoutHandler)
-	mux.HandleFunc("POST /register", handler.RegisterHandler)
+	mux.HandleFunc("/", middleware.LoggerMiddleware(handler.HomeHandler))
 
-	mux.HandleFunc("GET /hello", handler.HelloHandler)
+	mux.HandleFunc("POST /login", middleware.LoggerMiddleware(
+		middleware.AuthMiddleware(handler.LoginHandler)))
+	mux.HandleFunc("POST /logout", middleware.LoggerMiddleware(
+		middleware.AuthMiddleware(handler.LogoutHandler)))
+	mux.HandleFunc("POST /register", middleware.LoggerMiddleware(
+		middleware.AuthMiddleware(handler.RegisterHandler)))
 
-	s := &http.Server{
+	mux.HandleFunc("GET /hello", middleware.LoggerMiddleware(
+		middleware.AuthMiddleware(handler.HelloHandler)))
+
+	server := &http.Server{
 		Addr:    ":8080",
-		Handler: middlewareStack(mux),
+		Handler: mux,
 	}
-	log.Fatal(s.ListenAndServe())
+	log.Fatal(server.ListenAndServe())
 }
