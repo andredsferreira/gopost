@@ -15,14 +15,20 @@ func init() {
 func main() {
 	mux := http.NewServeMux()
 
+	middlewareStack := middleware.CreateStack(
+		middleware.LoggerMiddleware,
+		middleware.LoggerMiddleware,
+	)
+
 	mux.HandleFunc("POST /login", handler.LoginHandler)
 	mux.HandleFunc("POST /logout", handler.LogoutHandler)
 	mux.HandleFunc("POST /register", handler.RegisterHandler)
-	mux.HandleFunc("GET /hello", middleware.AuthMiddleware(handler.HelloHandler))
+
+	mux.HandleFunc("GET /hello", handler.HelloHandler)
 
 	s := &http.Server{
 		Addr:    ":8080",
-		Handler: mux,
+		Handler: middlewareStack(mux),
 	}
 	log.Fatal(s.ListenAndServe())
 }

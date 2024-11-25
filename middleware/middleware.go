@@ -2,10 +2,33 @@ package middleware
 
 import (
 	"goweb01/service"
+	"log"
 	"net/http"
+	"time"
 )
 
-func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
+type Middleware func(http.Handler) http.Handler
+
+func CreateStack(m ...Middleware) Middleware {
+	return func(next http.Handler) http.Handler {
+		for i := len(m) - 1; i >= 0; i-- {
+			c := m[i]
+			next = c(next)
+		}
+		return next
+	}
+}
+
+func LoggerMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		s := time.Now()
+		next.ServeHTTP(w, r)
+		d := time.Since(s)
+		log.Printf("INFO: %s %s %s\n", r.Method, r.URL.String(), d.String())
+	})
+}
+
+func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		cookie, err := r.Cookie("jwt")
 		if err != nil {
