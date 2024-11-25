@@ -18,7 +18,9 @@ func main() {
 	files := http.FileServer(http.Dir("static"))
 	mux.Handle("/static/", http.StripPrefix("/static/", files))
 
-	mux.HandleFunc("/", middleware.LoggerMiddleware(handler.HomeHandler))
+	mux.HandleFunc("/", middleware.LoggerMiddleware(handler.IndexHandler))
+
+	mux.HandleFunc("GET /home", middleware.LoggerMiddleware(handler.HomeHandler))
 
 	mux.HandleFunc("POST /login", middleware.LoggerMiddleware(
 		middleware.AuthMiddleware(handler.LoginHandler)))
@@ -27,12 +29,17 @@ func main() {
 	mux.HandleFunc("POST /register", middleware.LoggerMiddleware(
 		middleware.AuthMiddleware(handler.RegisterHandler)))
 
-	mux.HandleFunc("GET /hello", middleware.LoggerMiddleware(
-		middleware.AuthMiddleware(handler.HelloHandler)))
+	mux.HandleFunc("GET /post", middleware.LoggerMiddleware(
+		middleware.AuthMiddleware(handler.GetUserPostsHandler)))
+	mux.HandleFunc("POST /post", middleware.LoggerMiddleware(
+		middleware.AuthMiddleware(handler.CreatePostHandler)))
+	mux.HandleFunc("GET /post/all", middleware.LoggerMiddleware(handler.GetAllPostsHandler))
 
 	server := &http.Server{
 		Addr:    ":8080",
 		Handler: mux,
 	}
+
+	log.Println("http://localhost:8080")
 	log.Fatal(server.ListenAndServe())
 }

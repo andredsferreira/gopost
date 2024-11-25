@@ -1,0 +1,26 @@
+:root {
+    --primary-clr: hsl(0, 0%, 0%);
+    --hover-clr: blue;
+    --border-clr: hsl(0, 0%, 90%);
+    --text-clr: hsl(0, 0%, 90%);
+}
+
+nav ul {
+    display: flex;
+    gap: 10px;
+}
+
+nav ul li a {
+    display: block;
+    margin: 10px;
+    color: var(--text-clr);
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: var(--hover-clr);
+}
+
+nav ul li.register {
+    margin-left: auto;
+}

@@ -1,0 +1,31 @@
+{{define "index"}}
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="https://unpkg.com/htmx.org"></script>
+
+  <link rel="stylesheet" href="static/css/global.css">
+  <link rel="stylesheet" href="static/css/navbar.css">
+
+  <title>Welcome</title>
+
+</head>
+
+<body>
+
+  <main>
+
+    {{template "navbar" .}}
+
+    <div id="content"></div>
+
+  </main>
+
+</body>
+
+</html>
+{{end}}

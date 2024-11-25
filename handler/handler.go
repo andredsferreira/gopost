@@ -11,8 +11,14 @@ import (
 
 var tmpl = template.Must(template.ParseGlob("static/templates/*.html"))
 
+func IndexHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html")
+	tmpl.ExecuteTemplate(w, "index", nil)
+}
+
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl.ExecuteTemplate(w, "home.html", nil)
+	w.Header().Set("Content-Type", "text/html")
+	tmpl.ExecuteTemplate(w, "home", nil)
 }
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
@@ -82,6 +88,14 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "user registered successfully")
 }
 
-func HelloHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Hello! You are authorized.")
+func GetUserPostsHandler(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func CreatePostHandler(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func GetAllPostsHandler(w http.ResponseWriter, r *http.Request) {
+
 }
