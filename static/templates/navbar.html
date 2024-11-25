@@ -1,8 +1,10 @@
 {{define "navbar"}}
+
 <nav>
   <ul>
     <li>
-      <a href="#" hx-get="/home" hx-target="#content" hx-swap="innerHTML">Home</a>
+      <a href="#" hx-get="/home" hx-target="#content"
+        hx-swap="innerHTML">Home</a>
     </li>
 
     <li>
@@ -18,12 +20,14 @@
     </li>
 
     <li class="register">
-      <a>Register</a>
+      <a href="#">Register</a>
     </li>
 
     <li>
-      <a>Login</a>
+      <a href="#" hx-get="/login" hx-target="#content"
+        hx-swap="innerHTML">Login</a>
     </li>
   </ul>
 </nav>
+
 {{end}}

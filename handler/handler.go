@@ -12,13 +12,15 @@ import (
 var tmpl = template.Must(template.ParseGlob("static/templates/*.html"))
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html")
 	tmpl.ExecuteTemplate(w, "index", nil)
 }
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html")
 	tmpl.ExecuteTemplate(w, "home", nil)
+}
+
+func RenderLoginHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "login", nil)
 }
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
@@ -45,7 +47,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		SameSite: http.SameSiteStrictMode,
 	})
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprint(w, "successful login")
+	w.Header().Set("HX-Redirect", "/home")
 }
 
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {
