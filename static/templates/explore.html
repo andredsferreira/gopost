@@ -1,0 +1,19 @@
+{{define "explore"}}
+
+<div>
+  <h1>All Posts</h1>
+  {{if .}}
+  <ul>
+    {{range .}}
+    <li>
+      <h2>{{.Title}}</h2>
+      <p>{{.Content}}</p>
+      <p><em>Posted on: {{.CreatedAt}}</em></p>
+    </li>
+    {{end}}
+  </ul>
+  {{else}}
+  <p>No posts available.</p>
+  {{end}}
+</div>
+{{end}}

@@ -137,5 +137,11 @@ func RenderCreatePostHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAllPostsHandler(w http.ResponseWriter, r *http.Request) {
-
+	posts, err := model.GetAllPosts()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	tmpl.ExecuteTemplate(w, "explore", posts)
+	w.WriteHeader(http.StatusOK)
 }
