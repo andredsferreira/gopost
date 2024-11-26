@@ -18,22 +18,46 @@ func main() {
 	files := http.FileServer(http.Dir("static"))
 	mux.Handle("/static/", http.StripPrefix("/static/", files))
 
-	mux.HandleFunc("/", middleware.LoggerMiddleware(handler.IndexHandler))
+	mux.HandleFunc("/", middleware.LoggerMiddleware(
+		handler.IndexHandler))
 
-	mux.HandleFunc("GET /home", middleware.LoggerMiddleware(handler.HomeHandler))
+	mux.HandleFunc("GET /home", middleware.LoggerMiddleware(
+		handler.HomeHandler))
 
-	mux.HandleFunc("GET /login", middleware.LoggerMiddleware(handler.RenderLoginHandler))
-	mux.HandleFunc("POST /login", middleware.LoggerMiddleware(handler.LoginHandler))
+	mux.HandleFunc("GET /login", middleware.LoggerMiddleware(
+		handler.RenderLoginHandler))
+
+	mux.HandleFunc("POST /login", middleware.LoggerMiddleware(
+		handler.LoginHandler))
+
 	mux.HandleFunc("POST /logout", middleware.LoggerMiddleware(
-		middleware.AuthMiddleware(handler.LogoutHandler)))
-	mux.HandleFunc("POST /register", middleware.LoggerMiddleware(handler.RegisterHandler))
-	mux.HandleFunc("GET /register", middleware.LoggerMiddleware(handler.RenderRegisterHandler))
+		middleware.AuthMiddleware(
+			handler.LogoutHandler)))
+
+	mux.HandleFunc("POST /register", middleware.LoggerMiddleware(
+		handler.RegisterHandler))
+
+	mux.HandleFunc("GET /register", middleware.LoggerMiddleware(
+		handler.RenderRegisterHandler))
 
 	mux.HandleFunc("GET /post", middleware.LoggerMiddleware(
-		middleware.AuthMiddleware(handler.GetUserPostsHandler)))
+		middleware.AuthMiddleware(
+			handler.GetUserPostsHandler)))
+
 	mux.HandleFunc("POST /post", middleware.LoggerMiddleware(
-		middleware.AuthMiddleware(handler.CreatePostHandler)))
-	mux.HandleFunc("GET /post/all", middleware.LoggerMiddleware(handler.GetAllPostsHandler))
+		middleware.AuthMiddleware(
+			handler.CreatePostHandler)))
+
+	mux.HandleFunc("GET /post/all", middleware.LoggerMiddleware(
+		handler.GetAllPostsHandler))
+
+	mux.HandleFunc("GET /post/create", middleware.LoggerMiddleware(
+		middleware.AuthMiddleware(
+			handler.RenderCreatePostHandler)))
+
+	mux.HandleFunc("POST /post/create", middleware.LoggerMiddleware(
+		middleware.AuthMiddleware(
+			handler.CreatePostHandler)))
 
 	server := &http.Server{
 		Addr:    ":8080",

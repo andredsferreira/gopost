@@ -1,0 +1,47 @@
+#create-post-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#create-post {
+    display: inline-block;
+    border: 1.5px solid var(--border-clr);
+    border-radius: 20px;
+    padding: 16px;
+    text-align: center;
+    width: 60%;
+    max-width: 600px;
+}
+
+#create-post input, textarea {
+    display: block;
+    border: 1.5px solid var(--border-clr);
+    border-radius: 6px;
+    margin: 20px;
+    padding: 4px;
+    width: 100%;
+    width: 200px;
+    box-sizing: border-box;
+}
+
+#create-post button {
+    border: 1.5px solid var(--border-clr);
+    border-radius: 6px;
+    display: inline;
+    padding: 10px 20px 10px 20px;
+
+    margin-bottom: 10;
+}
+
+#create-post button:hover {
+    background-color: var(--hover-clr);
+}
+
+#create-post button:focus {
+    background-color: var(--hover-clr);
+}
+
+#create-post input:focus {
+    background-color: var(--hover-clr);
+}

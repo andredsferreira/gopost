@@ -102,6 +102,10 @@ func CreatePostHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func RenderCreatePostHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "create-post", nil)
+}
+
 func GetAllPostsHandler(w http.ResponseWriter, r *http.Request) {
 
 }
