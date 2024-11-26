@@ -27,10 +27,17 @@
         hx-swap="innerHTML">Register</a>
     </li>
 
+    {{if .IsLoggedIn}}
     <li>
-      <a href="#" hx-get="/login" hx-target="#content"
+      <a href="/logout" hx-post="/logout" hx-target="#content"
+        hx-swap="innerHTML">Logout</a>
+    </li>
+    {{else}}
+    <li>
+      <a href="/login" hx-get="/login" hx-target="#content"
         hx-swap="innerHTML">Login</a>
     </li>
+    {{end}}
   </ul>
 </nav>
 
