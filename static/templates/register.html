@@ -1,0 +1,17 @@
+{{define "register"}}
+
+<div id="register-wrapper">
+  <div id="register">
+    <form hx-post="/register">
+      <h1>Register</h1>
+      <input type="text" name="username" placeholder="username"
+        autocomplete="off">
+      <input type="password" name="password" placeholder="password"
+        autocomplete="new-password">
+      <input type="email" name="email" placeholder="email" autocomplete="off">
+      <button>Register</button>
+    </form>
+  </div>
+</div>
+
+{{end}}

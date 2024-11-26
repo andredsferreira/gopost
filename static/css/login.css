@@ -32,20 +32,12 @@
 
 #login button:hover {
     background-color: var(--hover-clr);
-    color: black;
 }
 
 #login button:focus {
     background-color: var(--hover-clr);
-    color: black;
 }
 
 #login input:focus {
     background-color: var(--hover-clr);
-    color: black;
-}
-
-#login input:focus::placeholder {
-    color: black;
-    border-color: black;
 }

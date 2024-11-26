@@ -90,6 +90,10 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "user registered successfully")
 }
 
+func RenderRegisterHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "register", nil)
+}
+
 func GetUserPostsHandler(w http.ResponseWriter, r *http.Request) {
 
 }

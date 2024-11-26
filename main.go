@@ -26,8 +26,8 @@ func main() {
 	mux.HandleFunc("POST /login", middleware.LoggerMiddleware(handler.LoginHandler))
 	mux.HandleFunc("POST /logout", middleware.LoggerMiddleware(
 		middleware.AuthMiddleware(handler.LogoutHandler)))
-	mux.HandleFunc("POST /register", middleware.LoggerMiddleware(
-		middleware.AuthMiddleware(handler.RegisterHandler)))
+	mux.HandleFunc("POST /register", middleware.LoggerMiddleware(handler.RegisterHandler))
+	mux.HandleFunc("GET /register", middleware.LoggerMiddleware(handler.RenderRegisterHandler))
 
 	mux.HandleFunc("GET /post", middleware.LoggerMiddleware(
 		middleware.AuthMiddleware(handler.GetUserPostsHandler)))
