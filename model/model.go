@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"goweb01/db"
 	"regexp"
-	"time"
 )
 
 type User struct {
@@ -67,23 +66,13 @@ func GetAllPosts() ([]Post, error) {
     `
 	rows, err := db.MySql.Query(query)
 	if err != nil {
-		return nil, fmt.Errorf("error fetching posts: %w", err)
+		return nil, fmt.Errorf("failed to execute query: %w", err)
 	}
 	defer rows.Close()
 	for rows.Next() {
 		var p Post
-		var createdAtRaw []byte
-		if err := rows.Scan(&p.Username, &p.Title, &p.Content, &createdAtRaw); err != nil {
+		if err := rows.Scan(&p.Username, &p.Title, &p.Content, &p.CreatedAt); err != nil {
 			return nil, fmt.Errorf("failed to scan row: %w", err)
-		}
-		if createdAtRaw != nil {
-			parsedTime, err := time.Parse("2006-01-02 15:04:05", string(createdAtRaw))
-			if err != nil {
-				return nil, fmt.Errorf("failed to parse created_at timestamp: %w", err)
-			}
-			p.CreatedAt = parsedTime.Format("2006-01-02")
-		} else {
-			p.CreatedAt = "unknown"
 		}
 		posts = append(posts, p)
 	}

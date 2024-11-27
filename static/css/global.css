@@ -3,7 +3,7 @@
 :root {
     --primary-clr: hsl(240, 100%, 98%);
     --hover-clr: hsl(240, 84%, 90%);
-    --highlight-clr: hsl(170, 52%, 32%);
+    --highlight-clr: hsl(171, 26%, 29%);
     --border-clr: hsl(209, 54%, 32%);
     --text-clr: hsl(0, 0%, 0%);
 }
@@ -40,7 +40,12 @@ ol {
     list-style-type: none;
 }
 
-h1,h2,h3,h4,h5,h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     color: var(--highlight-clr);
 }
 
@@ -52,3 +57,6 @@ button:focus {
     outline: none;
 }
 
+textarea:focus {
+    outline: none;
+}
