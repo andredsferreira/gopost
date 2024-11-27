@@ -105,7 +105,30 @@ func RenderRegisterHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "register", nil)
 }
 
+func GetAllPostsHandler(w http.ResponseWriter, r *http.Request) {
+	posts, err := model.GetAllPosts()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	tmpl.ExecuteTemplate(w, "explore", posts)
+	w.WriteHeader(http.StatusOK)
+}
+
 func GetUserPostsHandler(w http.ResponseWriter, r *http.Request) {
+	c, err := r.Cookie("jwt")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusUnauthorized)
+		return
+	}
+	username := service.GetUsernameFromCookie(c)
+	posts, err := model.GetUserPosts(username)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotAcceptable)
+		return
+	}
+	tmpl.ExecuteTemplate(w, "user-posts", posts)
+	w.WriteHeader(http.StatusOK)
 
 }
 
@@ -117,12 +140,7 @@ func CreatePostHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
-	claims, err := service.GetClaimsFromJWT(c.Value)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	username := claims["username"].(string)
+	username := service.GetUsernameFromCookie(c)
 	err = model.CreatePost(username, title, content)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotAcceptable)
@@ -134,14 +152,4 @@ func CreatePostHandler(w http.ResponseWriter, r *http.Request) {
 
 func RenderCreatePostHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "create-post", nil)
-}
-
-func GetAllPostsHandler(w http.ResponseWriter, r *http.Request) {
-	posts, err := model.GetAllPosts()
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	tmpl.ExecuteTemplate(w, "explore", posts)
-	w.WriteHeader(http.StatusOK)
 }

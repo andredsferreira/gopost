@@ -18,7 +18,7 @@ type Post struct {
 	Username  string
 	Title     string
 	Content   string
-	CreatedAt *time.Time
+	CreatedAt string
 }
 
 func GetUserByUsername(username string) (User, error) {
@@ -81,7 +81,9 @@ func GetAllPosts() ([]Post, error) {
 			if err != nil {
 				return nil, fmt.Errorf("failed to parse created_at timestamp: %w", err)
 			}
-			p.CreatedAt = &parsedTime // Assign the parsed time to CreatedAt
+			p.CreatedAt = parsedTime.Format("2006-01-02")
+		} else {
+			p.CreatedAt = "unknown"
 		}
 		posts = append(posts, p)
 	}

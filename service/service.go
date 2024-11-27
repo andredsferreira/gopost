@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -38,16 +39,16 @@ func GenerateJWT(u string) (string, error) {
 
 func VerifyJWT(ts string) error {
 	token, err := jwt.Parse(ts, func(token *jwt.Token) (interface{}, error) {
-	   return HMACSecretKey, nil
+		return HMACSecretKey, nil
 	})
 	if err != nil {
-	   return fmt.Errorf("error parsing jwt: %w", err)
+		return fmt.Errorf("error parsing jwt: %w", err)
 	}
 	if !token.Valid {
-	   return fmt.Errorf("invalid jwt")
+		return fmt.Errorf("invalid jwt")
 	}
 	return nil
- }
+}
 
 func GetClaimsFromJWT(ts string) (jwt.MapClaims, error) {
 	t, err := jwt.Parse(ts, func(t *jwt.Token) (interface{}, error) {
@@ -63,4 +64,12 @@ func GetClaimsFromJWT(ts string) (jwt.MapClaims, error) {
 		return claims, nil
 	}
 	return nil, fmt.Errorf("invalid jwt")
+}
+
+func GetUsernameFromCookie(c *http.Cookie) string {
+	claims, err := GetClaimsFromJWT(c.Value)
+	if err != nil {
+		return ""
+	}
+	return claims["username"].(string)
 }

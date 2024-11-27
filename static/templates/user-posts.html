@@ -2,6 +2,21 @@
 
 <div id="user-posts">
 
+  <h1>User posts</h1>
+  {{if .}}
+  <ul>
+    {{range .}}
+    <li>
+      <h2>{{.Title}}</h2>
+      <p>{{.Content}}</p>
+      <p>Posted by: {{.Username}} at {{.CreatedAt}}</p>
+    </li>
+    {{end}}
+  </ul>
+  {{else}}
+  <p>You don't have posts</p>
+  {{end}}
+
 </div>
 
 {{end}}

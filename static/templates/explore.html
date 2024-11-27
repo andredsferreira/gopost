@@ -8,7 +8,7 @@
     <li>
       <h2>{{.Title}}</h2>
       <p>{{.Content}}</p>
-      <p><em>Posted on: {{.CreatedAt}}</em></p>
+      <p>Posted by: {{.Username}} at {{.CreatedAt}}</p>
     </li>
     {{end}}
   </ul>
@@ -16,4 +16,5 @@
   <p>No posts available.</p>
   {{end}}
 </div>
+
 {{end}}
