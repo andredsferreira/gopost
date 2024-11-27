@@ -25,10 +25,7 @@ body {
 }
 
 p {
-    padding: 20px;
     text-align: justify;
-    border: 1.5px solid var(--border-clr);
-    border-radius: 10px;
 }
 
 a {

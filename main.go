@@ -34,15 +34,19 @@ func main() {
 		middleware.AuthMiddleware(
 			handler.LogoutHandler)))
 
-	mux.HandleFunc("POST /register", middleware.LoggerMiddleware(
-		handler.RegisterHandler))
-
 	mux.HandleFunc("GET /register", middleware.LoggerMiddleware(
 		handler.RenderRegisterHandler))
+
+	mux.HandleFunc("POST /register", middleware.LoggerMiddleware(
+		handler.RegisterHandler))
 
 	mux.HandleFunc("GET /post", middleware.LoggerMiddleware(
 		middleware.AuthMiddleware(
 			handler.GetUserPostsHandler)))
+
+	mux.HandleFunc("GET /post/create", middleware.LoggerMiddleware(
+		middleware.AuthMiddleware(
+			handler.RenderCreatePostHandler)))
 
 	mux.HandleFunc("POST /post", middleware.LoggerMiddleware(
 		middleware.AuthMiddleware(
@@ -50,14 +54,6 @@ func main() {
 
 	mux.HandleFunc("GET /post/all", middleware.LoggerMiddleware(
 		handler.GetAllPostsHandler))
-
-	mux.HandleFunc("GET /post/create", middleware.LoggerMiddleware(
-		middleware.AuthMiddleware(
-			handler.RenderCreatePostHandler)))
-
-	mux.HandleFunc("POST /post/create", middleware.LoggerMiddleware(
-		middleware.AuthMiddleware(
-			handler.CreatePostHandler)))
 
 	server := &http.Server{
 		Addr:    ":8080",

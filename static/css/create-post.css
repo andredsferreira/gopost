@@ -1,3 +1,4 @@
+/* General Form Styling */
 #create-post-wrapper {
     display: flex;
     justify-content: center;
@@ -17,7 +18,6 @@
     text-align: center;
     font-size: 1.5em;
 }
-
 
 #create-post input,
 #create-post textarea {
@@ -44,7 +44,6 @@
     border-radius: 10px;
 }
 
-
 #create-post button:hover {
     background-color: var(--hover-clr);
 }
@@ -53,10 +52,64 @@
     background-color: var(--hover-clr);
 }
 
-#create-post input:focus {
+#create-post input:focus,
+#create-post textarea:focus {
     background-color: var(--hover-clr);
 }
 
-#create-post textarea:focus {
-    background-color: var(--hover-clr);
+/* Select Styling */
+#categories {
+    width: 100%;
+    padding: 8px;
+    border: 1.5px solid var(--border-clr);
+    border-radius: 10px;
+    background-color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+#categories option {
+    padding: 5px;
+}
+
+/* Chosen Categories Styling */
+#chosen-categories {
+    margin-top: 20px;
+}
+
+#chosen-categories h4 {
+    margin-bottom: 10px;
+}
+
+#chosen-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chosen-category {
+    display: inline-block;
+    background-color: #f0f0f0;
+    padding: 8px 15px;
+    margin: 5px;
+    border-radius: 15px;
+    font-size: 14px;
+    cursor: pointer;
+    position: relative;
+}
+
+.remove-category {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #ff4d4d;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 50%;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.remove-category:hover {
+    background-color: #ff1a1a;
 }

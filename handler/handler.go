@@ -74,6 +74,10 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "successful logout")
 }
 
+func RenderRegisterHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "register", nil)
+}
+
 func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	username := r.FormValue("username")
 	password := r.FormValue("password")
@@ -99,10 +103,6 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprint(w, "user registered successfully")
-}
-
-func RenderRegisterHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl.ExecuteTemplate(w, "register", nil)
 }
 
 func GetAllPostsHandler(w http.ResponseWriter, r *http.Request) {
@@ -132,24 +132,37 @@ func GetUserPostsHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func RenderCreatePostHandler(w http.ResponseWriter, r *http.Request) {
+	categories, err := model.GetAllCategories()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	data := map[string]interface{}{
+		"Categories": categories,
+	}
+	tmpl.ExecuteTemplate(w, "create-post", data)
+}
+
 func CreatePostHandler(w http.ResponseWriter, r *http.Request) {
 	title := r.FormValue("title")
 	content := r.FormValue("content")
+	categories := r.Form["categories"]
+	if len(categories) < 3 {
+		http.Error(w, "selected more than 3 categories", http.StatusBadRequest)
+		return
+	}
 	c, err := r.Cookie("jwt")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
 	username := service.GetUsernameFromCookie(c)
-	err = model.CreatePost(username, title, content)
+	err = model.CreatePost(username, title, content, categories)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotAcceptable)
 		return
 	}
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprint(w, "Post successfully created")
-}
-
-func RenderCreatePostHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl.ExecuteTemplate(w, "create-post", nil)
 }

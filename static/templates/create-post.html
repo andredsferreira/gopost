@@ -3,7 +3,7 @@
 <div id="create-post-wrapper">
   <div id="create-post">
 
-    <form hx-post="/post/create">
+    <form hx-post="/post">
 
       <h3>Go post!</h3>
 
@@ -13,7 +13,25 @@
       </div>
 
       <div>
-        <textarea id="content" name="content" placeholder="What am i thinking?" required></textarea>
+        <textarea id="content" name="content" placeholder="What am i thinking?"
+          required></textarea>
+      </div>
+
+      <div>
+        <label for="categories">Select Categories (max 3):</label>
+        <select id="categories" name="categories" multiple required>
+          {{range .Categories}}
+          <option value="{{.}}">{{.}}</option>
+          {{end}}
+        </select>
+        <p id="category-error" style="color: red; display: none;">You can select
+          up to 3 categories only.</p>
+      </div>
+
+      <!-- Chosen Categories Section -->
+      <div id="chosen-categories">
+        <h4>Chosen Categories:</h4>
+        <div id="chosen-list"></div>
       </div>
 
       <div>
@@ -24,5 +42,42 @@
 
   </div>
 </div>
+
+<script>
+  const categorySelect = document.getElementById("categories");
+  const chosenList = document.getElementById("chosen-list");
+  const errorMessage = document.getElementById("category-error");
+
+  categorySelect.addEventListener("change", function () {
+    const selectedOptions = categorySelect.selectedOptions;
+    chosenList.innerHTML = "";
+    Array.from(selectedOptions).forEach(option => {
+      const categoryDiv = document.createElement("div");
+      categoryDiv.classList.add("chosen-category");
+      categoryDiv.textContent = option.text;
+      const removeButton = document.createElement("span");
+      removeButton.textContent = "X";
+      removeButton.classList.add("remove-category");
+      removeButton.onclick = function () {
+        // Remove the category from the selection
+        option.selected = false;
+        categoryDiv.remove();
+        validateCategories();
+      };
+      categoryDiv.appendChild(removeButton);
+      chosenList.appendChild(categoryDiv);
+    });
+    validateCategories();
+  });
+
+  function validateCategories() {
+    const selectedOptions = categorySelect.selectedOptions;
+    if (selectedOptions.length > 3) {
+      errorMessage.style.display = "block";
+    } else {
+      errorMessage.style.display = "none";
+    }
+  }
+</script>
 
 {{end}}
