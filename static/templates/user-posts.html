@@ -10,6 +10,14 @@
       <h2>{{.Title}}</h2>
       <p>{{.Content}}</p>
       <p>Posted by: {{.Username}} at {{.CreatedAt}}</p>
+      <p>Categories:
+      <ul>
+        {{range .Categories}}
+        <li>{{.}}</li>
+        {{end}}
+      </ul>
+      </p>
+
     </li>
     {{end}}
   </ul>

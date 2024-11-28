@@ -1,5 +1,6 @@
 nav {
     margin-bottom: 80px;
+    background-color: var(--highlight-clr);
 }
 
 nav ul {

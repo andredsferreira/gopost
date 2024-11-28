@@ -14,11 +14,11 @@ type User struct {
 }
 
 type Post struct {
-	Username  string
-	Title     string
-	Content   string
-	CreatedAt string
-	Category  string
+	Username   string
+	Title      string
+	Content    string
+	CreatedAt  string
+	Categories []string
 }
 
 func GetUserByUsername(username string) (User, error) {
@@ -62,7 +62,7 @@ func ValidateUser(username, password, email string) bool {
 func GetAllPosts() ([]Post, error) {
 	var posts []Post
 	query := `
-        SELECT username, title, content, created_at
+        SELECT *
         FROM posts
     `
 	rows, err := db.MySql.Query(query)
@@ -72,9 +72,15 @@ func GetAllPosts() ([]Post, error) {
 	defer rows.Close()
 	for rows.Next() {
 		var p Post
-		if err := rows.Scan(&p.Username, &p.Title, &p.Content, &p.CreatedAt); err != nil {
+		var id int
+		if err := rows.Scan(&id, &p.Username, &p.Title, &p.Content, &p.CreatedAt); err != nil {
 			return nil, fmt.Errorf("failed to scan row: %w", err)
 		}
+		postCategories, err := getPostCategories(id)
+		if err != nil {
+			return nil, fmt.Errorf("failed to execute query: %w", err)
+		}
+		p.Categories = postCategories
 		posts = append(posts, p)
 	}
 	if err := rows.Err(); err != nil {
@@ -86,7 +92,7 @@ func GetAllPosts() ([]Post, error) {
 func GetUserPosts(username string) ([]Post, error) {
 	var posts []Post
 	query := `
-		SELECT username, title, content, created_at
+		SELECT *
 		FROM posts
 		WHERE username = ?;
 	`
@@ -97,9 +103,15 @@ func GetUserPosts(username string) ([]Post, error) {
 	defer rows.Close()
 	for rows.Next() {
 		var p Post
-		if err := rows.Scan(&p.Username, &p.Title, &p.Content, &p.CreatedAt); err != nil {
+		var id int
+		if err := rows.Scan(&id, &p.Username, &p.Title, &p.Content, &p.CreatedAt); err != nil {
 			return nil, fmt.Errorf("failed to scan row: %w", err)
 		}
+		postCategories, err := getPostCategories(id)
+		if err != nil {
+			return nil, fmt.Errorf("failed to execute query: %w", err)
+		}
+		p.Categories = postCategories
 		posts = append(posts, p)
 	}
 	if err := rows.Err(); err != nil {
@@ -162,6 +174,32 @@ func GetAllCategories() ([]string, error) {
 	}
 	if err := rows.Err(); err != nil {
 		return nil, fmt.Errorf("rows iteration error: %w", err)
+	}
+	return categories, nil
+}
+
+func getPostCategories(id int) ([]string, error) {
+	var categories []string
+	query := `
+        SELECT c.category_name
+        FROM categories c
+        JOIN post_categories pc ON c.id = pc.category_id
+        WHERE pc.post_id = ?
+	`
+	rows, err := db.MySql.Query(query, id)
+	if err != nil {
+		return nil, fmt.Errorf("error querying post categories: %v", err)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var category string
+		if err := rows.Scan(&category); err != nil {
+			return nil, fmt.Errorf("error scanning row: %v", err)
+		}
+		categories = append(categories, category)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("error during row iteration: %v", err)
 	}
 	return categories, nil
 }

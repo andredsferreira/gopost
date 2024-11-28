@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"goweb01/service"
 	"log"
 	"net/http"
@@ -35,6 +36,7 @@ func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 		cookie, err := r.Cookie("jwt")
 		if err != nil {
 			if err == http.ErrNoCookie {
+				fmt.Fprint(w, "<p>You must login first</p>")
 				http.Error(w, "missing jwt cookie", http.StatusUnauthorized)
 				return
 			}
@@ -43,6 +45,7 @@ func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 		}
 		err = service.VerifyJWT(cookie.Value)
 		if err != nil {
+			fmt.Fprint(w, "<p>You must login first</p>")
 			http.Error(w, err.Error(), http.StatusUnauthorized)
 			return
 		}
