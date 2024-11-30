@@ -1,24 +1,39 @@
-nav {
-    margin-bottom: 80px;
-    background-color: var(--highlight-clr);
-}
-
-nav ul {
+.navbar {
+    --navbar-bg: var(--highlight-clr);
+    --navbar-link: var(--primary-clr);
+    --navbar-link-hover: var(--hover-clr);
     display: flex;
-    gap: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: var(--navbar-bg);
 }
 
-nav ul li a {
-    display: block;
-    margin: 10px;
-    color: var(--text-clr);
-    transition: color 0.3s ease;
+.navbar-links {
+    display: flex;
 }
 
-nav ul li a:hover {
-    color: var(--highlight-clr);
-}
-
-nav ul li.register {
+.navbar-links-right {
+    display: flex;
     margin-left: auto;
+}
+
+.navbar-link {
+    cursor: pointer;
+    padding: 10px 20px 10px 20px;
+    color: var(--navbar-link);
+}
+
+.navbar-link:hover {
+    background-color: var(--navbar-link-hover);
+}
+
+.navbar-link a {
+    text-decoration: none;
+    display: block;
+    color: inherit;
+}
+
+.navbar-link a:visited {
+    color: var(--navbar-link);
 }

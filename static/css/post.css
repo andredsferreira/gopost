@@ -1,0 +1,21 @@
+.post-content {
+    min-height: 100px;
+}
+
+.post-content p {
+    padding: 0px 4px 0px 4px;
+}
+
+
+.post-category {
+    display: inline-block;
+    border-radius: 20px;
+    background-color: var(--highlight-clr);
+}
+
+.post-category p {
+    margin: 0px 4px 0px 0px;
+    padding: 4px 10px 4px 10px;
+    font-size: 90%;
+    color: var(--primary-clr);
+}

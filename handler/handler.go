@@ -57,8 +57,8 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		HttpOnly: true,
 		SameSite: http.SameSiteStrictMode,
 	})
+	w.Header().Set("HX-Redirect", "/")
 	w.WriteHeader(http.StatusOK)
-	w.Header().Set("HX-Redirect", "/home")
 }
 
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {
@@ -70,8 +70,8 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 		HttpOnly: true,
 		SameSite: http.SameSiteStrictMode,
 	})
+	w.Header().Set("HX-Redirect", "/")
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprint(w, "successful logout")
 }
 
 func RenderRegisterHandler(w http.ResponseWriter, r *http.Request) {

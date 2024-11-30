@@ -1,26 +1,35 @@
 {{define "explore"}}
 
-<div>
+<div class="explore">
   {{if .}}
-  <ul>
-    {{range .}}
-    <li>
-      <h2>{{.Title}}</h2>
+
+  {{range .}}
+
+  <div class="sbox">
+    <h2>{{.Title}}</h2>
+
+    <div class="post-content">
       <p>{{.Content}}</p>
-      <p>Posted by: {{.Username}} at {{.CreatedAt}}</p>
-      <p>Categories:
-      <ul>
-        {{range .Categories}}
-        <li>{{.}}</li>
-        {{end}}
-      </ul>
-      </p>
-    </li>
+    </div>
+
+    {{range .Categories}}
+    <div class="post-category">
+      <p>{{.}}</p>
+    </div>
     {{end}}
-  </ul>
-  {{else}}
-  <p>No posts available.</p>
+
+    <p>Posted by {{.Username}} {{.CreatedAt}}</p>
+
+  </div>
+
   {{end}}
+
+  {{else}}
+
+  <p>No posts available.</p>
+
+  {{end}}
+
 </div>
 
 {{end}}

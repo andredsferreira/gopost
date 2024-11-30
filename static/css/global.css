@@ -1,11 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 :root {
-    --primary-clr: hsl(240, 100%, 98%);
-    --hover-clr: hsl(240, 84%, 90%);
-    --highlight-clr: hsl(171, 26%, 29%);
-    --border-clr: hsl(209, 54%, 32%);
+    --primary-clr: hsl(0, 0%, 95%);
     --text-clr: hsl(0, 0%, 0%);
+    --highlight-clr: hsl(330, 50%, 30%);
+    --hover-clr: hsl(330, 50%, 40%);
 }
 
 * {
@@ -13,11 +12,9 @@
     padding: 0;
     font-family: Poppins, sans-serif;
     line-height: 1.5;
-    color: var(--text-clr);
-    background-color: var(--primary-clr);
 }
 
-body {
+main {
     margin-top: 25px;
     margin-bottom: 25px;
     margin-left: 150px;
@@ -26,10 +23,6 @@ body {
 
 p {
     text-align: justify;
-}
-
-a {
-    text-decoration: none;
 }
 
 ul,

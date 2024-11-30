@@ -1,44 +1,65 @@
 {{define "navbar"}}
 
-<nav>
-  <ul>
-    <li>
-      <a href="#" hx-get="/home" hx-target="#content"
-        hx-swap="innerHTML">Home</a>
-    </li>
+<nav class="navbar">
 
-    <li>
-      <a href="#" hx-get="/post/all" hx-target="#content"
-        hx-swap="innerHTML">Explore</a>
-    </li>
+  <div class="navbar-links">
 
-    <li>
-      <a href="#" hx-get="/post" hx-target="#content" hx-swap="innerHTML">Your
-        posts</a>
-    </li>
+    <div class="navbar-link">
+      <a href="#" hx-get="/home" hx-target="#content" hx-swap="innerHTML">
+        Home
+      </a>
+    </div>
 
-    <li>
+    <div class="navbar-link">
+      <a href="#" hx-get="/post/all" hx-target="#content" hx-swap="innerHTML">
+        Explore
+      </a>
+    </div>
+
+    <div class="navbar-link">
+      <a href="#" hx-get="/post" hx-target="#content" hx-swap="innerHTML">
+        Your posts
+      </a>
+    </div>
+
+    <div class="navbar-link">
       <a href="#" hx-get="/post/create" hx-target="#content"
-        hx-swap="innerHTML">Create post</a>
-    </li>
+        hx-swap="innerHTML">
+        Create post
+      </a>
+    </div>
 
-    <li class="register">
-      <a href="#" hx-get="/register" hx-target="#content"
-        hx-swap="innerHTML">Register</a>
-    </li>
+  </div>
+
+  <div class="navbar-links-right">
+
+    <div class="navbar-link">
+      <a href="#" hx-get="/register" hx-target="#content" hx-swap="innerHTML">
+        Register
+      </a>
+    </div>
 
     {{if .IsLoggedIn}}
-    <li>
-      <a href="/logout" hx-post="/logout" hx-target="#content"
-        hx-swap="innerHTML">Logout</a>
-    </li>
+
+    <div class="navbar-link">
+      <a href="#" hx-post="/logout" hx-target="#content"
+        hx-swap="innerHTML">
+        Logout
+      </a>
+    </div>
+
     {{else}}
-    <li>
-      <a href="/login" hx-get="/login" hx-target="#content"
-        hx-swap="innerHTML">Login</a>
-    </li>
+
+    <div class="navbar-link">
+      <a href="#" hx-get="/login" hx-target="#content" hx-swap="innerHTML">
+        Login
+      </a>
+    </div>
+
     {{end}}
-  </ul>
+    
+  </div>
+
 </nav>
 
 {{end}}
