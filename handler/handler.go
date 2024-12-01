@@ -147,6 +147,10 @@ func RenderCreatePostHandler(w http.ResponseWriter, r *http.Request) {
 func CreatePostHandler(w http.ResponseWriter, r *http.Request) {
 	title := r.FormValue("title")
 	content := r.FormValue("content")
+	if title == "" || content == "" {
+		http.Error(w, "empty title or content", http.StatusBadRequest)
+		return
+	}
 	categories := r.Form["categories"]
 	if len(categories) < 3 {
 		http.Error(w, "selected more than 3 categories", http.StatusBadRequest)

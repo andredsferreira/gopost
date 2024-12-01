@@ -16,6 +16,8 @@
       </a>
     </div>
 
+    {{if .IsLoggedIn}}
+
     <div class="navbar-link">
       <a href="#" hx-get="/post" hx-target="#content" hx-swap="innerHTML">
         Your posts
@@ -29,7 +31,10 @@
       </a>
     </div>
 
+    {{end}}
+
   </div>
+
 
   <div class="navbar-links-right">
 
@@ -42,8 +47,7 @@
     {{if .IsLoggedIn}}
 
     <div class="navbar-link">
-      <a href="#" hx-post="/logout" hx-target="#content"
-        hx-swap="innerHTML">
+      <a href="#" hx-post="/logout" hx-target="#content" hx-swap="innerHTML">
         Logout
       </a>
     </div>
@@ -57,7 +61,7 @@
     </div>
 
     {{end}}
-    
+
   </div>
 
 </nav>

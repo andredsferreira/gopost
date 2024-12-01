@@ -3,26 +3,36 @@
 <div id="user-posts">
 
   <h1>Your posts</h1>
-  {{if .}}
-  <ul>
-    {{range .}}
-    <li>
-      <h2>{{.Title}}</h2>
-      <p>{{.Content}}</p>
-      <p>Posted by: {{.Username}} at {{.CreatedAt}}</p>
-      <p>Categories:
-      <ul>
-        {{range .Categories}}
-        <li>{{.}}</li>
-        {{end}}
-      </ul>
-      </p>
 
-    </li>
+  <!-- if there are posts -->
+  {{if .}}
+
+  {{range .}}
+  
+  <div class="sbox">
+    <h2>{{.Title}}</h2>
+
+    <div class="post-content">
+      <p>{{.Content}}</p>
+    </div>
+
+    {{range .Categories}}
+    <div class="post-category">
+      <p>{{.}}</p>
+    </div>
     {{end}}
-  </ul>
+
+    <p>Posted by {{.Username}} {{.CreatedAt}}</p>
+
+    </p>
+  </div>
+
+  {{end}}
+
   {{else}}
+
   <p>You don't have posts</p>
+
   {{end}}
 
 </div>

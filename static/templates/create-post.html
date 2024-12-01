@@ -5,26 +5,25 @@
 
     <form hx-post="/post">
 
-      <h3>Go post!</h3>
-
       <div>
         <input type="text" id="title" name="title" placeholder="Post title"
-          required />
+          required pattern="\S.*"
+          title="Title cannot be empty or whitespace only" />
       </div>
 
       <div>
         <textarea rows="20" id="content" name="content"
-          placeholder="What am i thinking?" required></textarea>
+          placeholder="What am i thinking?" required pattern="\S.*"
+          title="Post cannot be empty or whitespace only"></textarea>
       </div>
 
-      <div>
-        <label for="categories">Select Categories (max 3):</label>
-        <select id="categories" name="categories" multiple required>
-          {{range .Categories}}
-          <option value="{{.}}">{{.}}</option>
-          {{end}}
-        </select>
-      </div>
+      <p style="font-size: 80%;">Categories (use CTRL+click to select multiple)</p>
+      <select id="categories" name="categories" multiple>
+        {{range .Categories}}
+        <option id="category" value="{{.}}">{{.}}</option>
+        {{end}}
+      </select>
+
 
       <div>
         <button type="submit">Post</button>
