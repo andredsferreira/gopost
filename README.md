@@ -1,10 +1,10 @@
-# GO-WEB-01
+# GOPOST
 
 ## Description
 
-Simple project to learn web development in go. It's a basic authentication full stack application, with server side rendering.
+Simple project to learn web development in go. It's a basic full stack application, with server side rendering.
 
-It allows the call of endpoints for registering, login, logout, and listing of users in the system.
+It allows users to make simple posts with an associated category, it supports authentication via JWT's.
 
 ## Technologies used
 
