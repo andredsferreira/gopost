@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"fmt"
-	"goweb01/service"
+	"gopost/service"
 	"log"
 	"net/http"
 	"time"

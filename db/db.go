@@ -4,28 +4,37 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
 )
 
 var MySql *sql.DB
 
 func ConnectDatabase() {
-	cfg := mysql.Config{
-		User:   "root",
-		Passwd: "42DctTV7IC0F",
-		Net:    "tcp",
-		Addr:   "vsgate-s1.dei.isep.ipp.pt:10694",
-		DBName: "go_web_01",
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("No .env file found")
 	}
-	var err error
+
+	cfg := mysql.Config{
+		User:   os.Getenv("DB_USER"),
+		Passwd: os.Getenv("DB_PASS"),
+		Net:    "tcp",
+		Addr:   fmt.Sprintf("%s:%s", os.Getenv("DB_HOST"), os.Getenv("DB_PORT")),
+		DBName: os.Getenv("DB_NAME"),
+	}
+
 	MySql, err = sql.Open("mysql", cfg.FormatDSN())
 	if err != nil {
 		log.Fatal(err)
 	}
-	pingErr := MySql.Ping()
-	if pingErr != nil {
-		log.Fatal(pingErr)
+
+	if err := MySql.Ping(); err != nil {
+		log.Fatal(err)
 	}
+
 	fmt.Println("database connected")
 }

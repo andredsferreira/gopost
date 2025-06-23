@@ -3,7 +3,7 @@ package model
 import (
 	"database/sql"
 	"fmt"
-	"goweb01/db"
+	"gopost/db"
 	"regexp"
 )
 

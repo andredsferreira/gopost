@@ -2,8 +2,8 @@ package handler
 
 import (
 	"fmt"
-	"goweb01/model"
-	"goweb01/service"
+	"gopost/model"
+	"gopost/service"
 	"net/http"
 	"text/template"
 	"time"

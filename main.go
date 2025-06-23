@@ -1,9 +1,9 @@
 package main
 
 import (
-	"goweb01/db"
-	"goweb01/handler"
-	"goweb01/middleware"
+	"gopost/db"
+	"gopost/handler"
+	"gopost/middleware"
 	"log"
 	"net/http"
 )
